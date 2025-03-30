@@ -9,25 +9,25 @@ import {
 } from "date-fns";
 
 import queryString from "query-string";
-
-import { CONNECTION_GAMES } from "./data";
+import { getPuzzleForDate } from "./data";
 
 export const getToday = () => startOfToday();
 export const getYesterday = () => startOfYesterday();
 
-// October 2023 Game Epoch
-// https://stackoverflow.com/questions/2552483/why-does-the-month-argument-range-from-0-to-11-in-javascripts-date-constructor
-export const firstGameDate = new Date(2023, 9, 23);
-export const periodInDays = 7;
+export const firstGameDate = startOfDay(new Date("2024-01-01"));
+export const periodInDays = 1;
 
-export const getLastGameDate = (today) => {
-  const t = startOfDay(today);
-  let daysSinceLastGame = differenceInDays(t, firstGameDate) % periodInDays;
-  return addDays(t, -daysSinceLastGame);
+export const getNextGameDate = (date) => {
+  return addDays(date, periodInDays);
 };
 
-export const getNextGameDate = (today) => {
-  return addDays(getLastGameDate(today), periodInDays);
+export const getPreviousGameDate = (date) => {
+  return addDays(date, -periodInDays);
+};
+
+export const getIsLatestGame = () => {
+  const parsed = queryString.parse(window.location.search);
+  return !parsed.d;
 };
 
 export const isValidGameDate = (date) => {
@@ -50,18 +50,20 @@ export const getIndex = (gameDate) => {
   return index;
 };
 
-export const getPuzzleOfDay = (index) => {
+export const getPuzzleOfDay = async (index) => {
   if (index < 0) {
     throw new Error("Invalid index");
   }
 
-  return CONNECTION_GAMES[index % CONNECTION_GAMES.length];
+  const date = addDays(firstGameDate, index * periodInDays);
+  const puzzle = await getPuzzleForDate(date);
+  return puzzle;
 };
 
-export const getSolution = (gameDate) => {
+export const getSolution = async (gameDate) => {
   const nextGameDate = getNextGameDate(gameDate);
   const index = getIndex(gameDate);
-  const puzzleOfTheDay = getPuzzleOfDay(index);
+  const puzzleOfTheDay = await getPuzzleOfDay(index);
   console.log("index for today: ", index);
   return {
     puzzleAnswers: puzzleOfTheDay,
@@ -101,11 +103,8 @@ export const setGameDate = (d) => {
   window.location.href = "/";
 };
 
-export const getIsLatestGame = () => {
-  // https://github.com/cwackerfuss/react-wordle/pull/505
-  const parsed = queryString.parse(window.location.search);
-  return parsed === null || !("d" in parsed);
+// Note: This will now be async and should be handled differently in components
+export const getInitialSolution = async () => {
+  const gameDate = getGameDate();
+  return await getSolution(gameDate);
 };
-
-export const { puzzleAnswers, puzzleGameDate, puzzleIndex, dateOfNextPuzzle } =
-  getSolution(getGameDate());

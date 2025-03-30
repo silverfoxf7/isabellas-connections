@@ -1,154 +1,119 @@
+import { getGoogleSheetsData } from './googleSheets';
+
 export const CONNECTION_GAMES = [
   [
     {
-      category: "Black Women Authors",
-      words: ["Toni", "Paule", "Zora", "Alice"],
-      difficulty: 1,
-      imageSrc: "https://i.ibb.co/Gn36Ypb/Connections-1.png",
-    },
-    {
-      category: "Michael ____",
-      words: ["Jackson", "Jordan", "Johnson", "Tyson"],
-      difficulty: 2,
-      imageSrc: "https://i.ibb.co/3B44zXX/Connections-2.png",
-    },
-    {
-      category: "Black Greek Sorority Symbols",
-      words: ["Poodle", "Dove", "Ivy", "Pyramid"],
-      difficulty: 3,
-      imageSrc: "https://i.ibb.co/4MwD7zv/Connections-3.png",
-    },
-
-    {
-      category: "Boyz II Men",
-      words: ["Michael", "Nathan", "Wanyá", "Shawn"],
-      difficulty: 4,
-      imageSrc:
-        "https://i.ibb.co/V2vnr5P/boys2men-2-d53afdddf480401fac1204a3954aa5f6.webp",
-    },
-  ],
-  [
-    {
-      category: "Countries in West Africa",
-      words: ["Nigeria", "Cameroon", "Togo", "Benin"],
+      category: "Common Backyard Birds",
+      words: ["Robin", "Sparrow", "Blue Jay", "Cardinal"],
       difficulty: 1,
     },
     {
-      category: "Countries in East Africa",
-      words: ["Tanzania", "Kenya", "Ethiopia", "Somalia"],
+      category: "Birds That Are Also Verbs",
+      words: ["Duck", "Swallow", "Hawk", "Crane"],
       difficulty: 2,
     },
     {
-      category: "Countries in North Africa",
-      words: ["Morocco", "Algeria", "Tunisia", "Libya"],
+      category: "Bird or Bird-Inspired Anime Characters",
+      words: ["Tokoyami", "The Heron", "Yubaba", "Karasu"],
       difficulty: 3,
     },
     {
-      category: "African Islands",
-      words: ["Madagascar", "Mauritius", "Comoros", "Mayotte"],
+      category: "Traits Shared by Birds and Anime Characters",
+      words: ["Migratory", "Territorial", "Observant", "Graceful"],
       difficulty: 4,
     },
   ],
   [
     {
-      category: "California Rappers",
-      words: ["O'Shea", "Eric", "Lesane", "Todd"],
+      category: "Continents",
+      words: ["Asia", "Europe", "Africa", "Australia"],
       difficulty: 1,
     },
     {
-      category: "Black Founded Clothing Brands",
-      words: ["Fubu", "Phat Farm", "Enyce", "Rocawear"],
+      category: "Objects in the Solar System",
+      words: ["Asteroid", "Planet", "Comet", "Moon"],
       difficulty: 2,
     },
     {
-      category: "Hair Cut Styles",
-      words: ["Ceasar", "Wavelength", "Fade", "Taper"],
+      category: "U.S. Towns Named After Planets",
+      words: ["Venus", "Mars", "Saturn", "Jupiter"],
       difficulty: 3,
     },
     {
-      category: "Black Mayors",
-      words: ["Bass", "Turner", "Adams", "Washington"],
-      difficulty: 4,
-      imageSrc: "https://i.ibb.co/pP1xn0Z/Connections.png",
-    },
-  ],
-  [
-    {
-      category: "Church Leadership Roles",
-      words: ["Deacon", "Elder", "Minister", "Pastor"],
-      difficulty: 1,
-      imageSrc: "https://d1isxmzxwhhjbk.cloudfront.net/3/Church-Roles.png",
-    },
-    {
-      category: "Synonyms for Lucky",
-      words: ["Blessed", "Fortunate", "Favored", "Providential"],
-      difficulty: 2,
-      imageSrc:
-        "https://d1isxmzxwhhjbk.cloudfront.net/3/Synonyms-for-Lucky.png",
-    },
-    {
-      category: "R&B Icons",
-      words: ["Tyrese", "Usher", "Brandy", "Maxwell"],
-      difficulty: 3,
-      imageSrc: "https://d1isxmzxwhhjbk.cloudfront.net/3/R-B-Icons.png",
-    },
-
-    {
-      category: "Tupac's Movie Character Names",
-      words: ["Bishop", "Lucky", "Birdie", "Tank"],
-      difficulty: 4,
-      imageSrc: "https://d1isxmzxwhhjbk.cloudfront.net/3/Tupac-Movie-Roles.png",
-    },
-  ],
-  [
-    {
-      category: "Slang for 'A Lot'",
-      words: ["Bare", "Mad", "Hella", "Buku"],
-      difficulty: 1,
-    },
-    {
-      category: "Slang for 'Great'",
-      words: ["Cold", "Raw", "Dope", "Lit"],
-      difficulty: 2,
-    },
-    {
-      category: "Ways to Refer to Money",
-      words: ["Brick", "Band", "Rack", "C-Note"],
-      difficulty: 3,
-    },
-
-    {
-      category: "Things Needed to Make a Pizza",
-      words: ["Cheddar", "Dough", "Sauce", "Heat"],
+      category: "Geographical and Astronomical Features",
+      words: ["Basin", "Ridge", "Valley", "Crater"],
       difficulty: 4,
     },
   ],
   [
     {
-      category: "Boondocks Characters",
-      words: ["Riley", "Huey", "Jazmine", "Robert"],
+      category: "Language Families",
+      words: ["Germanic", "Romance", "Slavic", "Sino-Tibetan"],
       difficulty: 1,
-      imageSrc:
-        "https://d1isxmzxwhhjbk.cloudfront.net/4/Boondocks-Characters.png",
     },
     {
-      category: "Uncle ____",
-      words: ["Ruckus", "Tom", "Luke", "Ben's"],
+      category: "Ways to Say 'Hello'",
+      words: ["Hola", "Bonjour", "Konnichiwa", "Ciao"],
       difficulty: 2,
-      imageSrc: "https://d1isxmzxwhhjbk.cloudfront.net/4/Uncle___.png",
     },
     {
-      category: "Bobby ____",
-      words: ["Brown", "Womack", "Schmurda", "Valentino"],
+      category: "Endangered or Constructed Languages",
+      words: ["Esperanto", "Elvish", "Yiddish", "Navajo"],
       difficulty: 3,
-      imageSrc: "https://d1isxmzxwhhjbk.cloudfront.net/4/Bobby___.png",
     },
     {
-      category: "Black Panther Leadership",
-      words: ["Bobby", "Fred", "Elaine", "Kathleen"],
+      category: "Language Terms Ending in '-Lingual'",
+      words: ["Mono", "Bi", "Tri", "Multi"],
       difficulty: 4,
-
-      imageSrc: "https://d1isxmzxwhhjbk.cloudfront.net/4/Black-Panthers.png",
     },
   ],
 ];
+
+export async function getTodaysPuzzle() {
+  try {
+    const today = new Date();
+    const puzzles = await getPuzzleForDate(today);
+    return puzzles || CONNECTION_GAMES[0]; // Fallback to first static puzzle if no data
+  } catch (error) {
+    console.error('Failed to fetch puzzle from Google Sheets:', error);
+    return CONNECTION_GAMES[0]; // Fallback to first static puzzle
+  }
+}
+
+export async function getPuzzleForDate(targetDate) {
+  try {
+    console.log('Getting puzzle for date:', targetDate);
+    const allPuzzles = await getGoogleSheetsData();
+    
+    // Format target date to match the format in spreadsheet (MM/DD/YYYY)
+    const formattedDate = new Date(targetDate).toLocaleDateString('en-US');
+    console.log('Looking for puzzle on date:', formattedDate);
+    
+    // Find puzzles for the target date
+    const puzzlesForDate = allPuzzles[formattedDate];
+    console.log('Found puzzles for date:', puzzlesForDate);
+    
+    if (!puzzlesForDate || puzzlesForDate.length === 0) {
+      console.log('No puzzles found for date, using fallback');
+      return CONNECTION_GAMES[0];
+    }
+    
+    return puzzlesForDate;
+  } catch (error) {
+    console.error('Error getting puzzle for date:', error);
+    return CONNECTION_GAMES[0]; // Fallback to first static puzzle
+  }
+}
+
+export async function getPuzzlesByDate() {
+  try {
+    return await getGoogleSheetsData();
+  } catch (error) {
+    console.error('Failed to fetch puzzles from Google Sheets:', error);
+    // Return static puzzles in a similar format for compatibility
+    return {
+      [new Date().toLocaleDateString('en-US')]: CONNECTION_GAMES[0],
+      // Add more dates if needed
+    };
+  }
+}
