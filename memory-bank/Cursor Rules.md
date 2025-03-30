@@ -1,0 +1,23 @@
+**1\. Maintain Project Rules in `.cursor/rules`**  
+Keep all project-specific guidelines there, referencing them with `@file` when needed. This ensures rules are version-controlled and easily updated without cluttering global settings.
+
+**2\. Enforce Modularity**  
+Avoid a “giant file” approach. Separate key functionalities (e.g., puzzle logic, data fetching, UI states) into multiple files and React components to keep the codebase clean and maintainable.
+
+**3\. Adhere to Chosen Tech Stack**  
+Use React 18.2.0, Parcel 2.9.2, Tailwind CSS, Styled Components, and Radix UI in a consistent, component-based pattern. Follow best practices from each library to maximize performance and clarity.
+
+**4\. Fetch Puzzle Data from Google Sheets**  
+Use the `google-spreadsheet` package for reliable reads of `category`, `word1-4`, `difficulty`, and `releaseDate` columns. Parse the data with `date-fns` to match puzzles with the current date.
+
+**5\. Track User Progress in Local Storage**  
+Store puzzle completion (win/fail) using the browser’s localStorage. Each puzzle’s `releaseDate` should act as a unique key for record-keeping and quick lookups.
+
+**6\. Apply Accessibility by Default**  
+Leverage Radix UI components for alerts, dialogs, and interactive elements. Ensure all components meet accessibility guidelines and provide screen-reader-friendly labels.
+
+**7\. Enforce Code and Style Standards**  
+Use ESLint (react-app config) and Prettier. Automatically format code on save, ensuring consistent style throughout the codebase.
+
+**8\. Animate Responsibly**  
+Use React Spring and React Confetti Explosion for transitions or celebratory moments, but keep animations smooth and purposeful. Do not compromise performance or accessibility.  
