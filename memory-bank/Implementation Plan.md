@@ -9,13 +9,13 @@ Below is a step-by-step Implementation Plan for the Connections Game. Each step 
 ## 1\. Establish the Project Structure
 
 1. **Create a new repository** and initialize a clean project folder.  
-2. **Add a `.cursor/rules`** file containing the Cursor Rules (from “Cursor Rules.md”).  
+2. **Add a `.cursor/rules`** file containing the Cursor Rules (from "Cursor Rules.md").  
    - Ensure these rules are version-controlled and recognized by your environment.  
 3. **Commit** the initial project setup to source control.
 
 **Test**
 
-- Verify the `.cursor/rules` file is present in the repository and references “Cursor Rules.md” accurately.  
+- Verify the `.cursor/rules` file is present in the repository and references "Cursor Rules.md" accurately.  
 - Confirm that your development environment recognizes these project-specific rules (no build or lint errors related to the rules).
 
 ---
@@ -39,7 +39,7 @@ Below is a step-by-step Implementation Plan for the Connections Game. Each step 
 
 - Run the development server via Parcel.  
 - Confirm that the basic starter application compiles with zero errors or warnings.  
-- Check that installed versions match the recommended versions (or are compatible if pinned versions aren’t available).
+- Check that installed versions match the recommended versions (or are compatible if pinned versions aren't available).
 
 ---
 
@@ -47,7 +47,7 @@ Below is a step-by-step Implementation Plan for the Connections Game. Each step 
 
 1. **Configure ESLint** using the react-app config (or a custom config if needed).  
 2. **Add Prettier** to handle code formatting.  
-3. **Enable “format on save”** in your code editor or build scripts.
+3. **Enable "format on save"** in your code editor or build scripts.
 
 **Test**
 
@@ -67,7 +67,7 @@ Below is a step-by-step Implementation Plan for the Connections Game. Each step 
 
 **Test**
 
-- Start the dev server and ensure a simple “Hello Puzzle” text appears in the browser.  
+- Start the dev server and ensure a simple "Hello Puzzle" text appears in the browser.  
 - Confirm Tailwind utility classes work by applying a small style (e.g., a background color).
 
 ---
@@ -90,7 +90,7 @@ Below is a step-by-step Implementation Plan for the Connections Game. Each step 
 ## 6\. Implement Daily Puzzle Selection
 
 1. **Create a utility function** `getPuzzleForDate` that:  
-   - Accepts a target date (default to “today”).  
+   - Accepts a target date (default to "today").  
    - Matches puzzle rows where `releaseDate` \== the target date.  
    - Returns the appropriate puzzle object or an indicator if no puzzle is found.  
 2. **Integrate** this utility in your main `App` component so the homepage loads the daily puzzle.
@@ -99,14 +99,14 @@ Below is a step-by-step Implementation Plan for the Connections Game. Each step 
 
 - Manually test with the current date.  
 - If a puzzle row has `releaseDate` matching today, verify that puzzle is returned and displayed.  
-- If no puzzle is found, confirm the UI shows a “No puzzle for today” message (or a placeholder).
+- If no puzzle is found, confirm the UI shows a "No puzzle for today" message (or a placeholder).
 
 ---
 
 ## 7\. Build the Base Puzzle Logic
 
 1. **Define data structures** in a new file (e.g., `PuzzleLogic.js`):  
-   - How you’ll store the puzzle words, category, and difficulty.  
+   - How you'll store the puzzle words, category, and difficulty.  
    - The guess limit and how to decrement guesses on each incorrect grouping.  
 2. **Create methods** for:  
    - Checking if four selected words match the correct category.  
@@ -117,14 +117,14 @@ Below is a step-by-step Implementation Plan for the Connections Game. Each step 
 - Feed in a mock puzzle with known words and category.  
 - Attempt both correct and incorrect groupings:  
   - Ensure guesses decrease on incorrect attempts.  
-  - Confirm a correct grouping triggers “completed” logic.
+  - Confirm a correct grouping triggers "completed" logic.
 
 ---
 
 ## 8\. Integrate Local Storage
 
-1. **Use `localStorage`** to record each puzzle’s result keyed by its `releaseDate`.  
-2. **On puzzle load**, check if there’s a stored completion or fail state:  
+1. **Use `localStorage`** to record each puzzle's result keyed by its `releaseDate`.  
+2. **On puzzle load**, check if there's a stored completion or fail state:  
    - If present, load that state immediately (e.g., no need to solve again).  
 3. **After puzzle ends**, write the new status (win/fail) to localStorage.
 
@@ -139,7 +139,7 @@ Below is a step-by-step Implementation Plan for the Connections Game. Each step 
 ## 9\. Implement a Basic Puzzle UI
 
 1. **Create a React component** (e.g., `<DailyPuzzle />`) that:  
-   - Displays the puzzle’s words.  
+   - Displays the puzzle's words.  
    - Lets the user select four words to form a group.  
    - Shows the guess count and puzzle status (in-progress, win, or fail).  
 2. **Use Radix UI** components where relevant for accessibility and standard UI patterns (e.g., modals or alerts).
@@ -183,6 +183,28 @@ Below is a step-by-step Implementation Plan for the Connections Game. Each step 
   - Displaying the correct daily puzzle.  
   - Tracking completion in localStorage.  
   - Handling correct vs. incorrect groupings.
+
+---
+
+## 12\. Implement Puzzle Navigation Features
+
+1. **Create a Puzzle Archive component** that:
+   - Displays all available puzzles organized by date.
+   - Shows completion status for each puzzle (from localStorage).
+   - Uses a clear, accessible UI for navigating between puzzles.
+2. **Add routing logic** using React Router:
+   - Implement routes for `/` (today's puzzle) and `/puzzles/:date` (specific puzzle by date).
+   - Create navigation links in the header/sidebar.
+3. **Enhance the PuzzleDataProvider** to:
+   - Load a specific puzzle based on the route parameter.
+   - Handle loading and error states for puzzle navigation.
+
+**Test**
+
+- Navigate to the Archive view and verify all available puzzles are listed.
+- Click on a specific puzzle date and confirm the correct puzzle loads.
+- Test direct URL access to `/puzzles/:date` to ensure deep linking works.
+- Verify completion status indicators match the localStorage data.
 
 ---
 

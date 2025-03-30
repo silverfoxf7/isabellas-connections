@@ -12,39 +12,56 @@ import {
 export const GameStatusContext = React.createContext();
 
 function GameStatusProvider({ children }) {
-  const { gameData } = React.useContext(PuzzleDataContext);
+  const { gameData, puzzleDate } = React.useContext(PuzzleDataContext);
   const [submittedGuesses, setSubmittedGuesses] = React.useState([]);
-  const [solvedGameData, setSolvedGameData] = React.useState(() => {
-    const loadedState = loadGameStateFromLocalStorage();
-    console.log("checking game state!", {
+  const [solvedGameData, setSolvedGameData] = React.useState([]);
+  const [isGameOver, setIsGameOver] = React.useState(false);
+  const [isGameWon, setIsGameWon] = React.useState(false);
+  const [guessCandidate, setGuessCandidate] = React.useState([]);
+
+  // Load saved game state when component mounts or when puzzle date changes
+  React.useEffect(() => {
+    const loadedState = loadGameStateFromLocalStorage(puzzleDate);
+    console.log("Loading game state for date:", puzzleDate, {
       loadedState: loadedState,
       gd1: gameData,
       gd2: loadedState?.gameData,
     });
-    if (!isGameDataEquivalent({ gd1: gameData, gd2: loadedState?.gameData })) {
-      return [];
-    }
-    if (
-      !isGuessesFromGame({
-        gameData,
-        submittedGuesses: loadedState?.submittedGuesses,
-      })
-    ) {
-      return [];
-    }
-    if (Array.isArray(loadedState?.submittedGuesses)) {
-      setSubmittedGuesses(loadedState.submittedGuesses);
-    }
+    
+    // Reset state
+    setSubmittedGuesses([]);
+    setSolvedGameData([]);
+    setIsGameOver(false);
+    setIsGameWon(false);
+    setGuessCandidate([]);
+    
+    // If we have valid saved state, restore it
+    if (isGameDataEquivalent({ gd1: gameData, gd2: loadedState?.gameData })) {
+      if (
+        isGuessesFromGame({
+          gameData,
+          submittedGuesses: loadedState?.submittedGuesses,
+        })
+      ) {
+        if (Array.isArray(loadedState?.submittedGuesses)) {
+          setSubmittedGuesses(loadedState.submittedGuesses);
+        }
 
-    if (Array.isArray(loadedState?.solvedGameData)) {
-      return loadedState.solvedGameData;
+        if (Array.isArray(loadedState?.solvedGameData)) {
+          setSolvedGameData(loadedState.solvedGameData);
+        }
+        
+        // Check if game was already won or lost
+        if (loadedState?.solvedGameData?.length === gameData.length) {
+          setIsGameOver(true);
+          setIsGameWon(true);
+        } else if ((loadedState?.submittedGuesses?.length - loadedState?.solvedGameData?.length) >= MAX_MISTAKES) {
+          setIsGameOver(true);
+          setIsGameWon(false);
+        }
+      }
     }
-    return [];
-  });
-
-  const [isGameOver, setIsGameOver] = React.useState(false);
-  const [isGameWon, setIsGameWon] = React.useState(false);
-  const [guessCandidate, setGuessCandidate] = React.useState([]);
+  }, [gameData, puzzleDate]);
 
   const numMistakesUsed = submittedGuesses.length - solvedGameData.length;
 
@@ -55,8 +72,8 @@ function GameStatusProvider({ children }) {
       setIsGameWon(true);
     }
     const gameState = { submittedGuesses, solvedGameData, gameData };
-    saveGameStateToLocalStorage(gameState);
-  }, [solvedGameData]);
+    saveGameStateToLocalStorage(gameState, puzzleDate);
+  }, [solvedGameData, puzzleDate]);
 
   // use effect to check if all mistakes have been used and end the game accordingly
   React.useEffect(() => {
@@ -65,8 +82,8 @@ function GameStatusProvider({ children }) {
       setIsGameWon(false);
     }
     const gameState = { submittedGuesses, solvedGameData, gameData };
-    saveGameStateToLocalStorage(gameState);
-  }, [submittedGuesses]);
+    saveGameStateToLocalStorage(gameState, puzzleDate);
+  }, [submittedGuesses, puzzleDate]);
 
   return (
     <GameStatusContext.Provider
