@@ -21,19 +21,21 @@ function GameStatusProvider({ children }) {
 
   // Load saved game state when component mounts or when puzzle date changes
   React.useEffect(() => {
-    const loadedState = loadGameStateFromLocalStorage(puzzleDate);
-    console.log("Loading game state for date:", puzzleDate, {
-      loadedState: loadedState,
-      gd1: gameData,
-      gd2: loadedState?.gameData,
-    });
-    
     // Reset state
     setSubmittedGuesses([]);
     setSolvedGameData([]);
     setIsGameOver(false);
     setIsGameWon(false);
     setGuessCandidate([]);
+
+    if (!gameData) return;
+
+    const loadedState = loadGameStateFromLocalStorage(puzzleDate);
+    console.log("Loading game state for date:", puzzleDate, {
+      loadedState: loadedState,
+      gd1: gameData,
+      gd2: loadedState?.gameData,
+    });
     
     // If we have valid saved state, restore it
     if (isGameDataEquivalent({ gd1: gameData, gd2: loadedState?.gameData })) {
@@ -67,23 +69,27 @@ function GameStatusProvider({ children }) {
 
   // use effect to check if game is won
   React.useEffect(() => {
+    if (!gameData) return;
+    
     if (solvedGameData.length === gameData.length) {
       setIsGameOver(true);
       setIsGameWon(true);
     }
     const gameState = { submittedGuesses, solvedGameData, gameData };
     saveGameStateToLocalStorage(gameState, puzzleDate);
-  }, [solvedGameData, puzzleDate]);
+  }, [solvedGameData, puzzleDate, gameData]);
 
   // use effect to check if all mistakes have been used and end the game accordingly
   React.useEffect(() => {
+    if (!gameData) return;
+    
     if (numMistakesUsed >= MAX_MISTAKES) {
       setIsGameOver(true);
       setIsGameWon(false);
     }
     const gameState = { submittedGuesses, solvedGameData, gameData };
     saveGameStateToLocalStorage(gameState, puzzleDate);
-  }, [submittedGuesses, puzzleDate]);
+  }, [submittedGuesses, puzzleDate, gameData, numMistakesUsed]);
 
   return (
     <GameStatusContext.Provider

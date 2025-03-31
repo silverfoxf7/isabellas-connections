@@ -73,10 +73,10 @@ export async function getTodaysPuzzle() {
   try {
     const today = new Date();
     const puzzles = await getPuzzleForDate(today);
-    return puzzles || CONNECTION_GAMES[0]; // Fallback to first static puzzle if no data
+    return puzzles;
   } catch (error) {
     console.error('Failed to fetch puzzle from Google Sheets:', error);
-    return CONNECTION_GAMES[0]; // Fallback to first static puzzle
+    return null;
   }
 }
 
@@ -94,14 +94,14 @@ export async function getPuzzleForDate(targetDate) {
     console.log('Found puzzles for date:', puzzlesForDate);
     
     if (!puzzlesForDate || puzzlesForDate.length === 0) {
-      console.log('No puzzles found for date, using fallback');
-      return CONNECTION_GAMES[0];
+      console.log('No puzzles found for date');
+      return null;
     }
     
     return puzzlesForDate;
   } catch (error) {
     console.error('Error getting puzzle for date:', error);
-    return CONNECTION_GAMES[0]; // Fallback to first static puzzle
+    return null;
   }
 }
 

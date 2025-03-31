@@ -5,6 +5,7 @@ import GameGrid from "../GameGrid";
 import NumberOfMistakesDisplay from "../NumberOfMistakesDisplay";
 import GameLostModal from "../modals/GameLostModal";
 import GameWonModal from "../modals/GameWonModal";
+import NoPuzzleMessage from "../NoPuzzleMessage";
 
 import { Separator } from "../ui/separator";
 import ConfettiExplosion from "react-confetti-explosion";
@@ -24,7 +25,7 @@ function Game() {
     React.useContext(GameStatusContext);
 
   const [shuffledRows, setShuffledRows] = React.useState(
-    shuffleGameData({ gameData })
+    gameData ? shuffleGameData({ gameData }) : []
   );
   const [isEndGameModalOpen, setisEndGameModalOpen] = React.useState(false);
   const [gridShake, setGridShake] = React.useState(false);
@@ -43,6 +44,8 @@ function Game() {
 
   // use effect to update Game Grid after a row has been correctly solved
   React.useEffect(() => {
+    if (!gameData) return;
+    
     const categoriesToRemoveFromRows = solvedGameData.map(
       (data) => data.category
     );
@@ -52,7 +55,7 @@ function Game() {
     if (dataLeftForRows.length > 0) {
       setShuffledRows(shuffleGameData({ gameData: dataLeftForRows }));
     }
-  }, [solvedGameData]);
+  }, [solvedGameData, gameData]);
 
   // Handle End Game!
   React.useEffect(() => {
@@ -73,6 +76,15 @@ function Game() {
 
     return () => window.clearTimeout(delayModalOpen);
   }, [isGameOver]);
+
+  // If there's no puzzle data, show the message
+  if (!gameData) {
+    return (
+      <div className="game-wrapper">
+        <NoPuzzleMessage />
+      </div>
+    );
+  }
 
   return (
     <>

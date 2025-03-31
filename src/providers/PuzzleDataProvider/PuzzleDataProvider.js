@@ -28,6 +28,9 @@ function PuzzleDataProvider({ children }) {
     }
   };
 
+  // Get the native date string early
+  const nativeDateString = getNativeDateString(dateParam) || new Date().toLocaleDateString('en-US');
+
   React.useEffect(() => {
     async function fetchPuzzle() {
       try {
@@ -64,7 +67,7 @@ function PuzzleDataProvider({ children }) {
     }
 
     fetchPuzzle();
-  }, [dateParam]); // Re-fetch when date parameter changes
+  }, [dateParam]);
 
   if (isLoading) {
     return <div>Loading puzzle...</div>;
@@ -75,14 +78,22 @@ function PuzzleDataProvider({ children }) {
   }
 
   if (!gameData) {
-    return <div>No puzzle available</div>;
+    return (
+      <PuzzleDataContext.Provider
+        value={{ 
+          gameData: null,
+          numCategories: 0,
+          categorySize: 0,
+          puzzleDate: nativeDateString
+        }}
+      >
+        {children}
+      </PuzzleDataContext.Provider>
+    );
   }
 
   const categorySize = gameData[0].words.length;
   const numCategories = gameData.length;
-  
-  // Convert URL date param to native date format for storage
-  const nativeDateString = getNativeDateString(dateParam) || new Date().toLocaleDateString('en-US');
 
   return (
     <PuzzleDataContext.Provider
