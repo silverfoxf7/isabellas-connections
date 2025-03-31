@@ -14,6 +14,8 @@ import { GameStatusContext } from "../../providers/GameStatusProvider";
 import GameControlButtonsPanel from "../GameControlButtonsPanel";
 
 import ViewResultsModal from "../modals/ViewResultsModal";
+import { Link } from "react-router-dom";
+import { useLocation } from "react-router-dom";
 
 function Game() {
   const { gameData, categorySize, numCategories, puzzleDate } =
@@ -27,6 +29,8 @@ function Game() {
   const [isEndGameModalOpen, setisEndGameModalOpen] = React.useState(false);
   const [gridShake, setGridShake] = React.useState(false);
   const [showConfetti, setShowConfetti] = React.useState(false);
+
+  const location = useLocation();
 
   // Format the puzzle date for display
   const formattedDate = React.useMemo(() => {
@@ -73,7 +77,6 @@ function Game() {
   return (
     <>
       <div className="text-center mt-4 mb-2">
-        <p className="text-gray-500 text-sm">Puzzle for {formattedDate}</p>
         <h3 className="text-xl">
           Create {numCategories} groups of {categorySize}
         </h3>
@@ -119,6 +122,24 @@ function Game() {
         ) : (
           <ViewResultsModal />
         )}
+        
+        <div className="mt-8 text-center">
+          <p className="text-gray-500 text-sm mb-4">Puzzle for {formattedDate}</p>
+          <nav className="flex justify-center gap-8">
+            <Link 
+              to="/" 
+              className={`text-sm ${location.pathname === '/' ? 'text-blue-500 font-medium' : 'text-gray-500 hover:text-gray-900'}`}
+            >
+              Today's Puzzle
+            </Link>
+            <Link 
+              to="/archive" 
+              className={`text-sm ${location.pathname === '/archive' ? 'text-blue-500 font-medium' : 'text-gray-500 hover:text-gray-900'}`}
+            >
+              Puzzle Archive
+            </Link>
+          </nav>
+        </div>
       </div>
     </>
   );
