@@ -86,7 +86,7 @@ export async function getPuzzleForDate(targetDate) {
     const allPuzzles = await getGoogleSheetsData();
     
     // Format target date to match the format in spreadsheet (MM/DD/YYYY)
-    const formattedDate = new Date(targetDate).toLocaleDateString('en-US');
+    const formattedDate = formatDate(targetDate);
     console.log('Looking for puzzle on date:', formattedDate);
     
     // Find puzzles for the target date
@@ -112,8 +112,16 @@ export async function getPuzzlesByDate() {
     console.error('Failed to fetch puzzles from Google Sheets:', error);
     // Return static puzzles in a similar format for compatibility
     return {
-      [new Date().toLocaleDateString('en-US')]: CONNECTION_GAMES[0],
+      [formatDate(new Date())]: CONNECTION_GAMES[0],
       // Add more dates if needed
     };
   }
+}
+
+// Helper function to format date consistently
+function formatDate(date) {
+  const d = new Date(date);
+  const month = String(d.getMonth() + 1).padStart(2, '0');
+  const day = String(d.getDate()).padStart(2, '0');
+  return `${month}/${day}/${d.getFullYear()}`;
 }
