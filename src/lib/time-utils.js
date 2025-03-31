@@ -25,6 +25,8 @@ export const getPreviousGameDate = (date) => {
   return addDays(date, -periodInDays);
 };
 
+export const dateOfNextPuzzle = getNextGameDate(getToday()).valueOf();
+
 export const getIsLatestGame = () => {
   const parsed = queryString.parse(window.location.search);
   return !parsed.d;

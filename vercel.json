@@ -4,6 +4,6 @@
   ],
   "buildCommand": "npm run build",
   "outputDirectory": "dist",
-  "framework": "react",
+  "framework": "create-react-app",
   "cleanUrls": true
 } 
